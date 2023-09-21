@@ -385,6 +385,22 @@ public class EthernetTracker {
         return mFactory.hasInterface(iface);
     }
 
+    String getIpAddress(String iface) {
+        return mFactory.getIpAddress(iface);
+    }
+
+    String getNetmask(String iface) {
+        return mFactory.getNetmask(iface);
+    }
+
+    String getGateway(String iface) {
+        return mFactory.getGateway(iface);
+    }
+
+    String getDns(String iface) {
+        return mFactory.getDns(iface);
+    }
+
     String[] getClientModeInterfaces(boolean includeRestricted) {
         return mFactory.getAvailableInterfaces(includeRestricted);
     }
