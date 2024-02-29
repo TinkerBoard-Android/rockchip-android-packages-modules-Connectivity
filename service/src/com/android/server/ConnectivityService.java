@@ -291,8 +291,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
     private static final String REQUEST_ARG = "requests";
 
     private static final boolean DBG = true;
-    private static final boolean DDBG = Log.isLoggable(TAG, Log.DEBUG);
-    private static final boolean VDBG = Log.isLoggable(TAG, Log.VERBOSE);
+    private static final boolean DDBG = true;	//Log.isLoggable(TAG, Log.DEBUG);
+    private static final boolean VDBG = true;	//Log.isLoggable(TAG, Log.VERBOSE);
 
     private static final boolean LOGD_BLOCKED_NETWORKINFO = true;
 
@@ -1587,7 +1587,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
         handleAlwaysOnNetworkRequest(mDefaultMobileDataRequest,
                 ConnectivitySettingsManager.MOBILE_DATA_ALWAYS_ON, true /* defaultValue */);
         handleAlwaysOnNetworkRequest(mDefaultWifiRequest,
-                ConnectivitySettingsManager.WIFI_ALWAYS_REQUESTED, false /* defaultValue */);
+                ConnectivitySettingsManager.WIFI_ALWAYS_REQUESTED, true/* defaultValue */);
         final boolean vehicleAlwaysRequested = mResources.get().getBoolean(
                 R.bool.config_vehicleInternalNetworkAlwaysRequested);
         handleAlwaysOnNetworkRequest(mDefaultVehicleRequest, vehicleAlwaysRequested);
@@ -3797,6 +3797,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
         // 2. If the network was inactive and there are now requests, unset inactive.
         // 3. If this network is unneeded (which implies it is not lingering), and there is at least
         //    one lingered request, set inactive.
+		/****
         nai.updateInactivityTimer();
         if (nai.isInactive() && nai.numForegroundNetworkRequests() > 0) {
             if (DBG) log("Unsetting inactive " + nai.toShortString());
@@ -3811,6 +3812,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
             logNetworkEvent(nai, NetworkEvent.NETWORK_LINGER);
             return true;
         }
+		****/
+		loge("frs skip updateInactivityState.");
         return false;
     }
 
@@ -6853,7 +6856,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
             return;
         }
         mNetworkOffers.add(noi);
-        issueNetworkNeeds(noi);
+	//issueNetworkNeeds(noi);
     }
 
     private void handleUnregisterNetworkOffer(@NonNull final NetworkOfferInfo noi) {
@@ -7780,6 +7783,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
     }
 
     private void teardownUnneededNetwork(NetworkAgentInfo nai) {
+		/**
         if (nai.numRequestNetworkRequests() != 0) {
             for (int i = 0; i < nai.numNetworkRequests(); i++) {
                 NetworkRequest nr = nai.requestAt(i);
@@ -7790,6 +7794,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
             }
         }
         nai.disconnect();
+		**/
+		loge("frs skip teardownUnneededNetwork.");
     }
 
     private void handleLingerComplete(NetworkAgentInfo oldNetwork) {
@@ -8113,6 +8119,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
                 // Remove default networking if disallowed for managed default requests.
                 bestNetwork = mNoServiceNetwork;
             }
+            loge("frs bestNetwork = " + bestNetwork + "bestRequest = " + bestRequest);
             if (nri.getSatisfier() != bestNetwork) {
                 // bestNetwork may be null if no network can satisfy this request.
                 changes.addRequestReassignment(new NetworkReassignment.RequestReassignment(
@@ -8150,7 +8157,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
             log(changes.toString()); // Shorter form, only one line of log
         }
         applyNetworkReassignment(changes, now);
-        issueNetworkNeeds();
+        //issueNetworkNeeds();
     }
 
     private void applyNetworkReassignment(@NonNull final NetworkReassignment changes,
