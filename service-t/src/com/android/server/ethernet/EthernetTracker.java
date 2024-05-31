@@ -703,7 +703,8 @@ public class EthernetTracker {
         if (DBG) Log.i(TAG, "maybeTrackInterface: " + iface);
 
         // Do not use an interface for tethering if it has configured NetworkCapabilities.
-        if (mTetheringInterface == null && !mNetworkCapabilities.containsKey(iface)) {
+        if ((mTetheringInterface == null && !mNetworkCapabilities.containsKey(iface)) || iface.equals("eth1")) {
+            Log.i(TAG, "Set default interface to " + iface);
             mTetheringInterface = iface;
         }
 
