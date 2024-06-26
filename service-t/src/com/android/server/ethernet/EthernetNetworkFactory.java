@@ -493,7 +493,7 @@ public class EthernetNetworkFactory {
                 // passed in the registerNetworkOffer() call.
                 mRequestIds.add(request.requestId);
                 // if the network is already started, this is a no-op.
-                start();
+                //start();
             }
 
             @Override
@@ -512,7 +512,7 @@ public class EthernetNetworkFactory {
                 }
                 if (mRequestIds.isEmpty()) {
                     // not currently serving any requests, stop the network.
-                    stop();
+                    //stop();
                 }
             }
         }
@@ -621,7 +621,7 @@ public class EthernetNetworkFactory {
         void onIpLayerStarted(@NonNull final LinkProperties linkProperties) {
             if (mNetworkAgent != null) {
                 Log.e(TAG, "Already have a NetworkAgent - aborting new request");
-                stop();
+                //stop();
                 return;
             }
             mLinkProperties = linkProperties;
@@ -641,7 +641,7 @@ public class EthernetNetworkFactory {
                             if (mNetworkAgent == null) return;
 
                             if (this == mNetworkAgent.getCallbacks()) {
-                                stop();
+                                //stop();
                             } else {
                                 Log.d(TAG, "Ignoring unwanted as we have a more modern " +
                                         "instance");
@@ -745,6 +745,8 @@ public class EthernetNetworkFactory {
             mNetworkProvider.registerNetworkOffer(getNetworkScore(),
                     new NetworkCapabilities(mCapabilities), cmd -> mHandler.post(cmd),
                     mNetworkOfferCallback);
+            Log.i(TAG, "net: registerNetworkOffer start.");
+            start();
         }
 
         private void unregisterNetworkOfferAndStop() {

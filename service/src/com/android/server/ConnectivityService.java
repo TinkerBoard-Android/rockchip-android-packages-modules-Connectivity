@@ -4507,6 +4507,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
         // 2. If the network was inactive and there are now requests, unset inactive.
         // 3. If this network is unneeded (which implies it is not lingering), and there is at least
         //    one lingered request, set inactive.
+        /*
         nai.updateInactivityTimer();
         if (nai.isInactive() && nai.numForegroundNetworkRequests() > 0) {
             if (DBG) log("Unsetting inactive " + nai.toShortString());
@@ -4521,6 +4522,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
             logNetworkEvent(nai, NetworkEvent.NETWORK_LINGER);
             return true;
         }
+        */
+        log("net: skip updateInactivityState.");
         return false;
     }
 
@@ -9035,6 +9038,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
     }
 
     private void teardownUnneededNetwork(NetworkAgentInfo nai) {
+        /*
         if (nai.numRequestNetworkRequests() != 0) {
             for (int i = 0; i < nai.numNetworkRequests(); i++) {
                 NetworkRequest nr = nai.requestAt(i);
@@ -9045,6 +9049,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
             }
         }
         nai.disconnect();
+        */
+        log("net: skip teardownUnneededNetwork.");
     }
 
     private void handleLingerComplete(NetworkAgentInfo oldNetwork) {
