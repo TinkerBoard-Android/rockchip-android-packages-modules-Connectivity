@@ -33,6 +33,7 @@ import android.net.ConnectivityResources;
 import android.net.NetworkSpecifier;
 import android.net.TelephonyNetworkSpecifier;
 import android.net.wifi.WifiInfo;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
@@ -160,6 +161,12 @@ public class NetworkNotificationManager {
         final int eventId = notifyType.eventId;
         final int transportType;
         final CharSequence name;
+
+        if ("true".equals(SystemProperties.get("persist.kioskmode.enable", "false"))) {
+            Log.d(TAG, "showNotification: don't show notification in kiosk mode");
+            return;
+        }
+
         if (nai != null) {
             transportType = approximateTransportType(nai);
             final String extraInfo = nai.networkInfo.getExtraInfo();
